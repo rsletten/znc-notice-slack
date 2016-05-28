@@ -39,10 +39,10 @@ def check_spam(message):
     encoded_message = message.encode('utf-8')
     check = str(make_hash(encoded_message))
     if check in array[0]:
-        slack_message(debug_channel, 'check_spam_true', check)
+        # slack_message(debug_channel, 'check_spam_true', check)
         return True
     else:
-        slack_message(debug_channel, 'check_spam_false', check)
+        # slack_message(debug_channel, 'check_spam_false', check)
         array[0] = check
         return False
 
