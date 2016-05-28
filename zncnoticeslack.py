@@ -58,10 +58,11 @@ class zncnoticeslack(znc.Module):
         nick = nick.GetNick()
         channel = channel.GetName()
         message = str(message)
+        encoded_message = message.encode('utf-8')
 
         full_message = '[{0}] {1}'.format(nick, message)
 
-        if check_spam(message):
+        if check_spam(encoded_message):
             pass
         else:
             slack_message(notice_channel, 'wafflebot', full_message)
