@@ -9,13 +9,15 @@ slack_client = SlackClient(SLACK_TOKEN)
 notice_channel = "waffle-pings"
 chat_channel = "waffles"
 
-### Begin Spam Protection
+# Begin Spam Protection
 array = ['']
+
 
 def make_hash(hash):
     h = hashlib.new('sha256')
     h.update(hash)
-    return hash.hexdigest()
+    return h.hexdigest()
+
 
 def check_spam(message):
     check = str(make_hash(message))
@@ -25,7 +27,8 @@ def check_spam(message):
         array[0] = check
         return False
 
-### Begin Slack 
+# Begin Slack
+
 
 def slack_message(channel_id, slackname, message):
         slack_client.api_call(
@@ -39,7 +42,7 @@ def slack_message(channel_id, slackname, message):
 slack_message(chat_channel, 'wafflebot', "initialized")
 
 
-### Begin ZNC
+# Begin ZNC
 
 class zncnoticeslack(znc.Module):
     description = "Forwards IRC Channel Notices to Slack"
@@ -54,9 +57,9 @@ class zncnoticeslack(znc.Module):
         full_message = '[{0}] {1}'.format(nick, message)
 
         if check_spam(message):
-          pass
+            break
         else:
-          slack_message(chat_channel, name, full_message)
+            slack_message(notice_channel, 'wafflebot', full_message)
 
         return znc.CONTINUE
 
