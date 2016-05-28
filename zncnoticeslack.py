@@ -57,7 +57,7 @@ class zncnoticeslack(znc.Module):
         full_message = '[{0}] {1}'.format(nick, message)
 
         if check_spam(message):
-            break
+            pass
         else:
             slack_message(notice_channel, 'wafflebot', full_message)
 
