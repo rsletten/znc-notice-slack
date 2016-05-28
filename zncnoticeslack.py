@@ -8,7 +8,7 @@ slack_client = SlackClient(SLACK_TOKEN)
 
 notice_channel = "waffle-pings"
 chat_channel = "waffles"
-test_channel = "test"
+debug_channel = "test"
 
 # Begin Slack
 
@@ -22,9 +22,10 @@ def slack_message(channel_id, slackname, message):
             icon_emoji=':robot_face:'
         )
 
-slack_message(test_channel, 'wafflebot', "initialized")
+slack_message(debug_channel, 'wafflebot', "initialized")
 
 # Begin Spam Protection
+
 array = ['']
 
 
@@ -35,15 +36,14 @@ def make_hash(hash):
 
 
 def check_spam(message):
-    check = str(make_hash(message))
-    slack_message(test_channel, 'bot', check)
+    encoded_message = message.encode('utf-8')
+    check = str(make_hash(encoded_message))
     if check in array[0]:
-        slack_message(test_channel, 'bot', 'returned true')
+        slack_message(debug_channel, 'check_spam_true', check)
         return True
     else:
-        slack_message(test_channel, 'bot', 'returned false')
+        slack_message(debug_channel, 'check_spam_false', check)
         array[0] = check
-        slack_message(test_channel, 'bla', check)
         return False
 
 # Begin ZNC
@@ -58,11 +58,10 @@ class zncnoticeslack(znc.Module):
         nick = nick.GetNick()
         channel = channel.GetName()
         message = str(message)
-        encoded_message = message.encode('utf-8')
 
         full_message = '[{0}] {1}'.format(nick, message)
 
-        if check_spam(encoded_message):
+        if check_spam(message):
             pass
         else:
             slack_message(notice_channel, 'wafflebot', full_message)
