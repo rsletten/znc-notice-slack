@@ -11,5 +11,5 @@ install: zncnoticeslack.pyc
 	cp zncnoticeslack.pyc $(HOME)/.znc/modules/zncnoticeslack.pyc
 
 clean:
-	-rm -rf zncnoticeslack.so zncnoticeslack.pyc __pycache__
+	-rm -rf zncnoticeslack.so zncnoticeslack.copy.py zncnoticeslack.pyc __pycache__
 
