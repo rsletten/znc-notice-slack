@@ -8,7 +8,10 @@ slack_client = SlackClient(SLACK_TOKEN)
 
 notice_channel = "waffle-pings"
 chat_channel = "waffles"
-debug_channel = "test"
+pmt_channel = "waffle-pmt"
+caps_channel = "waffle-caps"
+games_channel = "waffle-games"
+debug_channel = "debug"
 
 # Begin Slack
 
@@ -64,7 +67,8 @@ class zncnoticeslack(znc.Module):
         if check_spam(message):
             pass
         else:
-            slack_message(notice_channel, 'wafflebot', full_message)
+            if str(channel) == "#waffles":
+                slack_message(notice_channel, 'wafflebot', full_message)
 
         return znc.CONTINUE
 
@@ -76,6 +80,17 @@ class zncnoticeslack(znc.Module):
 
         full_message = '{0}'.format(message)
         name = '{0}'.format(nick)
-        slack_message(chat_channel, name, full_message)
+
+        if str(channel) == "#waffles":
+            slack_message(chat_channel, name, full_message)
+        elif str(channel) == "#waffle-caps":
+            slack_message(caps_channel, name, full_message)
+        elif str(channel) == "#PMT":
+            slack_message(pmt_channel, name, full_message)
+        elif str(channel) == "#games":
+            slack_message(games_channel, name, full_message)
+        else:
+            slack_message(debug_channel, 'wafflebot', "couldn't find channel")
+
 
         return znc.CONTINUE
